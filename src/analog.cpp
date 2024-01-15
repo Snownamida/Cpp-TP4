@@ -42,6 +42,22 @@ protected:
   std::map<string, unsigned int> referers;
 };
 
+std::ostream &operator<<(std::ostream &os, const Log &log) {
+  os << "============================" << endl;
+  os << log.IP << endl;
+  os << log.username << endl;
+  os << log.authenticatedUser << endl;
+  os << log.time << endl;
+  os << log.timeZone << endl;
+  os << log.request << endl;
+  os << log.code << endl;
+  os << log.size << endl;
+  os << log.referer << endl;
+  os << log.UA << endl;
+  os << "============================" << endl;
+  return os;
+}
+
 int main(int argc, char *argv[]) {
 
   std::ifstream fin(argv[1]);
@@ -87,17 +103,6 @@ int main(int argc, char *argv[]) {
   }
 
   for (auto &log : logs) {
-    cout << "============================" << endl;
-    cout << log.IP << endl;
-    cout << log.username << endl;
-    cout << log.authenticatedUser << endl;
-    cout << log.time << endl;
-    cout << log.timeZone << endl;
-    cout << log.request << endl;
-    cout << log.code << endl;
-    cout << log.size << endl;
-    cout << log.referer << endl;
-    cout << log.UA << endl;
-    cout << "============================" << endl;
+    cout << log;
   }
 }
