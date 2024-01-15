@@ -12,6 +12,8 @@ using std::cout;
 using std::endl;
 using std::string;
 
+const string BASE_URL = "http://intranet-if.insa-lyon.fr";
+
 struct Log {
   string IP;
   string username;
@@ -102,6 +104,8 @@ int main(int argc, char *argv[]) {
 
     log.time.erase(0, 1);
     log.timeZone.pop_back();
+    if (!log.referer.compare(0, BASE_URL.length(), BASE_URL))
+      log.referer.erase(0, BASE_URL.length());
 
     logs.push_back(log);
   }
