@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 #include <ostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -17,8 +18,10 @@ struct Log {
   string authenticatedUser;
   string time;
   string timeZone;
-  string request;
-  char code[4];
+  string requestMethod;
+  string requestUrl;
+  string requestProtocol;
+  unsigned short code;
   unsigned int size;
   string referer;
   string UA;
@@ -49,7 +52,9 @@ std::ostream &operator<<(std::ostream &os, const Log &log) {
   os << log.authenticatedUser << endl;
   os << log.time << endl;
   os << log.timeZone << endl;
-  os << log.request << endl;
+  os << log.requestMethod << endl;
+  os << log.requestUrl << endl;
+  os << log.requestProtocol << endl;
   os << log.code << endl;
   os << log.size << endl;
   os << log.referer << endl;
@@ -72,32 +77,31 @@ int main(int argc, char *argv[]) {
   while (!fin.eof()) {
     Log log;
     string tmp;
+    std::istringstream tmpiss;
 
-    fin >> std::quoted(log.IP);
+    fin >> log.IP;
     if (log.IP.empty())
       break;
 
-    fin >> std::quoted(log.username);
-    fin >> std::quoted(log.authenticatedUser);
-
-    fin >> std::quoted(log.time);
-    log.time.erase(0, 1);
-
-    fin >> std::quoted(log.timeZone);
-    log.timeZone.pop_back();
-
-    fin >> std::quoted(log.request);
+    fin >> log.username >> log.authenticatedUser >> log.time >>
+        std::quoted(log.timeZone);
 
     fin >> std::quoted(tmp);
-    std::strcpy(log.code, tmp.c_str());
+    tmpiss = std::istringstream(tmp);
+    tmpiss >> log.requestMethod >> log.requestUrl >> log.requestProtocol;
 
-    fin >> std::quoted(tmp);
+    fin >> log.code;
+
+    fin >> tmp;
     if (tmp == "-")
       tmp = "0";
     log.size = std::stoi(tmp);
 
     fin >> std::quoted(log.referer);
     fin >> std::quoted(log.UA);
+
+    log.time.erase(0, 1);
+    log.timeZone.pop_back();
 
     logs.push_back(log);
   }
