@@ -65,7 +65,7 @@ std::ostream &operator<<(std::ostream &os, const Log &log) {
   return os;
 }
 
-void setLogs(std::vector<Log> &logs, const char *const filename) {
+void addLogsFromFile(std::vector<Log> &logs, const char *const filename) {
   std::ifstream fin(filename);
 
   if (!fin.is_open()) {
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
 
   std::vector<Log> logs;
 
-  setLogs(logs, argv[1]);
+  addLogsFromFile(logs, argv[1]);
 
   for (auto &log : logs) {
     cout << log;
