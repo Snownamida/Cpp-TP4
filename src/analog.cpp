@@ -4,11 +4,12 @@
 #include <iostream>
 #include <map>
 #include <ostream>
-#include <sstream>
 #include <string>
 #include <vector>
 
-using std::string, std::cout, std::endl;
+using std::cout;
+using std::endl;
+using std::string;
 
 struct Log {
   string IP;
