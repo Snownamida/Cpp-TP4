@@ -69,7 +69,7 @@ void setLogs(std::vector<Log> &logs, const char *const filename) {
   std::ifstream fin(filename);
 
   if (!fin.is_open()) {
-    throw "File open failed"
+    throw "File open failed";
   }
 
   while (!fin.eof()) {
