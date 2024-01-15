@@ -19,9 +19,9 @@ struct Log {
   std::string UA;
 };
 
-int main(void) {
+int main(int argc, char *argv[]) {
 
-  std::ifstream fin("Tests/logs/mini-anonyme.log");
+  std::ifstream fin(argv[1]);
 
   if (!fin.is_open()) {
     std::cout << "File open failed" << std::endl;
