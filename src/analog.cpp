@@ -65,16 +65,12 @@ std::ostream &operator<<(std::ostream &os, const Log &log) {
   return os;
 }
 
-int main(int argc, char *argv[]) {
-
-  std::ifstream fin(argv[1]);
+void setLogs(std::vector<Log> &logs, const char *const filename) {
+  std::ifstream fin(filename);
 
   if (!fin.is_open()) {
-    cout << "File open failed" << endl;
-    return -1;
+    throw "File open failed"
   }
-
-  std::vector<Log> logs;
 
   while (!fin.eof()) {
     Log log;
@@ -109,6 +105,14 @@ int main(int argc, char *argv[]) {
 
     logs.push_back(log);
   }
+  fin.close();
+}
+
+int main(int argc, char *argv[]) {
+
+  std::vector<Log> logs;
+
+  setLogs(logs, argv[1]);
 
   for (auto &log : logs) {
     cout << log;
