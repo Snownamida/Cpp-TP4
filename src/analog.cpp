@@ -47,7 +47,6 @@ protected:
 };
 
 std::ostream &operator<<(std::ostream &os, const Log &log) {
-  os << "============================" << endl;
   os << log.IP << endl;
   os << log.username << endl;
   os << log.authenticatedUser << endl;
@@ -60,7 +59,18 @@ std::ostream &operator<<(std::ostream &os, const Log &log) {
   os << log.size << endl;
   os << log.referer << endl;
   os << log.UA << endl;
-  os << "============================" << endl;
+  return os;
+}
+
+std::ostream &operator<<(std::ostream &os,
+                         std::map<string, document> &documents) {
+
+  for (auto &document : documents) {
+    cout << document.first << " " << document.second.getHit() << endl;
+    for (auto &referer : document.second.getReferers()) {
+      cout << "\t" << referer.first << " " << referer.second << endl;
+    }
+  }
   return os;
 }
 
@@ -122,12 +132,7 @@ int main(int argc, char *argv[]) {
     documents[log.requestUrl].addReferer(log.referer);
   }
 
-  // for (auto &document : documents) {
-  //   cout << document.first << " " << document.second.getHit() << endl;
-  //   for (auto &referer : document.second.getReferers()) {
-  //     cout << "\t" << referer.first << " " << referer.second << endl;
-  //   }
-  // }
+  // cout << documents;
 
   std::vector<std::pair<string, document>> documentsSorted(documents.begin(),
                                                            documents.end());
