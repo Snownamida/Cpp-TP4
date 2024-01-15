@@ -32,19 +32,15 @@ struct Log {
 class document {
 public:
   unsigned int getHit() const { return _hit; }
-  string getUrl() const { return _url; }
+  std::map<string, unsigned int> getReferers() const { return _referers; }
   void addReferer(string url) {
     _hit++;
-    if (referers.find(url) == referers.end())
-      referers[url] = 0;
-    else
-      referers[url]++;
+    _referers[url]++;
   }
 
 protected:
-  string _url;
   unsigned int _hit = 0;
-  std::map<string, unsigned int> referers;
+  std::map<string, unsigned int> _referers;
 };
 
 std::ostream &operator<<(std::ostream &os, const Log &log) {
@@ -114,7 +110,19 @@ int main(int argc, char *argv[]) {
 
   addLogsFromFile(logs, argv[1]);
 
+  // for (auto &log : logs) {
+  //   cout << log;
+  // }
+
+  std::map<string, document> documents;
   for (auto &log : logs) {
-    cout << log;
+    documents[log.requestUrl].addReferer(log.referer);
+  }
+
+  for (auto &document : documents) {
+    cout << document.first << " " << document.second.getHit() << endl;
+    for (auto &referer : document.second.getReferers()) {
+      cout << "\t" << referer.first << " " << referer.second << endl;
+    }
   }
 }
