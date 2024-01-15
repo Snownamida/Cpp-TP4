@@ -1,14 +1,12 @@
 #include <algorithm>
-#include <cstring>
-#include <fstream>
-#include <iomanip>
 #include <iostream>
 #include <map>
 #include <ostream>
-#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
+
+#include "logs.h"
 
 using std::cout;
 using std::endl;
@@ -16,21 +14,6 @@ using std::string;
 
 const string BASE_URL = "http://intranet-if.insa-lyon.fr";
 const unsigned int MAX_SHOW = 10;
-
-struct Log {
-  string IP;
-  string username;
-  string authenticatedUser;
-  string time;
-  string timeZone;
-  string requestMethod;
-  string requestUrl;
-  string requestProtocol;
-  unsigned short code;
-  unsigned int size;
-  string referer;
-  string UA;
-};
 
 class document {
 public:
@@ -46,22 +29,6 @@ protected:
   std::map<string, unsigned int> _referers;
 };
 
-std::ostream &operator<<(std::ostream &os, const Log &log) {
-  os << log.IP << endl;
-  os << log.username << endl;
-  os << log.authenticatedUser << endl;
-  os << log.time << endl;
-  os << log.timeZone << endl;
-  os << log.requestMethod << endl;
-  os << log.requestUrl << endl;
-  os << log.requestProtocol << endl;
-  os << log.code << endl;
-  os << log.size << endl;
-  os << log.referer << endl;
-  os << log.UA << endl;
-  return os;
-}
-
 std::ostream &operator<<(std::ostream &os,
                          std::map<string, document> &documents) {
 
@@ -74,54 +41,11 @@ std::ostream &operator<<(std::ostream &os,
   return os;
 }
 
-void addLogsFromFile(std::vector<Log> &logs, const char *const filename) {
-  std::ifstream fin(filename);
-
-  if (!fin.is_open()) {
-    throw "File open failed";
-  }
-
-  while (!fin.eof()) {
-    Log log;
-    string tmp;
-    std::istringstream tmpiss;
-
-    fin >> log.IP;
-    if (log.IP.empty())
-      break;
-
-    fin >> log.username >> log.authenticatedUser >> log.time >>
-        std::quoted(log.timeZone);
-
-    fin >> std::quoted(tmp);
-    tmpiss = std::istringstream(tmp);
-    tmpiss >> log.requestMethod >> log.requestUrl >> log.requestProtocol;
-
-    fin >> log.code;
-
-    fin >> tmp;
-    if (tmp == "-")
-      tmp = "0";
-    log.size = std::stoi(tmp);
-
-    fin >> std::quoted(log.referer);
-    fin >> std::quoted(log.UA);
-
-    log.time.erase(0, 1);
-    log.timeZone.pop_back();
-    if (!log.referer.compare(0, BASE_URL.length(), BASE_URL))
-      log.referer.erase(0, BASE_URL.length());
-
-    logs.push_back(log);
-  }
-  fin.close();
-}
-
 int main(int argc, char *argv[]) {
 
   std::vector<Log> logs;
 
-  addLogsFromFile(logs, argv[1]);
+  addLogsFromFile(logs, argv[1], BASE_URL);
 
   // for (auto &log : logs) {
   //   cout << log;
