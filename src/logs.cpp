@@ -12,7 +12,7 @@ const std::string TICKET_ETUDIANT_URL =
 const std::string TICKET_PERSONNEL_URL =
     "/SiteWebIF/Intranet-personnel.php?ticket=";
 const std::string GOOGLE_FR_URL = "http://www.google.fr/";
-const std::string GOOGLE_COM_URL = "http://www.google.fr/";
+const std::string GOOGLE_COM_URL = "http://www.google.com/";
 const std::string FAVICON_URL = "/cas/themes/insa/media/favicon.ico";
 
 std::ostream &operator<<(std::ostream &os, const Log &log) {
