@@ -1,3 +1,4 @@
+#include <cstring>
 #include <iostream>
 #include <ostream>
 #include <string>
@@ -14,28 +15,40 @@ using std::string;
 const string BASE_URL = "http://intranet-if.insa-lyon.fr";
 const unsigned int MAX_SHOW = 10;
 
+void printMostHitedDocuments(const Documents &documents) {
+  for (auto &document : documents.getSortedDucumentsByHit(MAX_SHOW)) {
+    cout << document.first << " " << document.second.getHit() << endl;
+    // for (auto &referer : document.second.getReferers()) {
+    //   cout << "\t" << referer.first << " " << referer.second << endl;
+    // }
+  }
+}
+
 int main(int argc, char *argv[]) {
 
   Logs logs;
 
-  bool optionG = 0, optionE = 0, optionT = 0;
-  string unString, heure, dotFile;
+  bool flagGenerateDot = false, flagExcludeImageCSSJS = false,
+       flagSetTimeInterval = false;
+
+  string TimeInterval, dotFileName;
   for (int i = 1; i < argc - 1; ++i) {
-      unString = argv[i];
-      if (unString == "-g") {
-          optionG = 1;
-          dotFile = argv[i + 1];
-      }
-      else if (unString == "-e") {
-          optionE = 1;
-      }
-      else if (unString == "-t") {
-          optionT = 1;
-          heure = argv[i + 1];
-      }
+    if (!strcmp(argv[i], "-g")) {
+      flagGenerateDot = 1;
+      dotFileName = argv[i + 1];
+      ++i;
+    } else if (!strcmp(argv[i], "-e")) {
+      flagExcludeImageCSSJS = 1;
+    } else if (!strcmp(argv[i], "-t")) {
+      flagSetTimeInterval = 1;
+      TimeInterval = argv[i + 1];
+      ++i;
+    } else
+      throw "invalid option";
   }
 
-  logs.addLogsFromFile(argv[argc-1], BASE_URL, optionE, optionT, heure);
+  logs.addLogsFromFile(argv[argc - 1], BASE_URL, flagExcludeImageCSSJS,
+                       flagSetTimeInterval, TimeInterval);
 
   // cout << logs;
 
@@ -46,14 +59,7 @@ int main(int argc, char *argv[]) {
 
   // cout << documents;
 
-  for (auto &document : documents.getSortedDucumentsByHit(MAX_SHOW)) {
-    cout << document.first << " " << document.second.getHit() << endl;
-    // for (auto &referer : document.second.getReferers()) {
-    //   cout << "\t" << referer.first << " " << referer.second << endl;
-    // }
-  }
-  
- 
-  
+  printMostHitedDocuments(documents);
+
   return 0;
 }
