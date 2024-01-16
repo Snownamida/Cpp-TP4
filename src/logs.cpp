@@ -7,6 +7,13 @@
 
 #include "logs.h"
 
+const std::string TICKET_ETUDIANT_URL =
+    "/SiteWebIF/Intranet-etudiant.php?ticket=";
+const std::string TICKET_PERSONNEL_URL =
+    "/SiteWebIF/Intranet-personnel.php?ticket=";
+const std::string GOOGLE_FR_URL = "http://www.google.fr/";
+const std::string GOOGLE_COM_URL = "http://www.google.fr/";
+
 std::ostream &operator<<(std::ostream &os, const Log &log) {
   os << "IP                : " << log.IP << std::endl;
   os << "username          : " << log.username << std::endl;
@@ -62,6 +69,16 @@ void Logs::addLogsFromFile(const char *const filename,
     log.timeZone.pop_back();
     if (!log.referer.compare(0, BASE_URL.length(), BASE_URL))
       log.referer.erase(0, BASE_URL.length());
+    if (!log.referer.compare(0, GOOGLE_FR_URL.length(), GOOGLE_FR_URL))
+      log.referer = GOOGLE_FR_URL + '*';
+    if (!log.referer.compare(0, GOOGLE_COM_URL.length(), GOOGLE_COM_URL))
+      log.referer = GOOGLE_COM_URL + '*';
+    if (!log.requestUrl.compare(0, TICKET_ETUDIANT_URL.length(),
+                                TICKET_ETUDIANT_URL))
+      log.requestUrl = TICKET_ETUDIANT_URL + "*";
+    if (!log.requestUrl.compare(0, TICKET_PERSONNEL_URL.length(),
+                                TICKET_PERSONNEL_URL))
+      log.requestUrl = TICKET_PERSONNEL_URL + "*";
 
     // Heure Filter
     std::string requestHeure;
@@ -74,10 +91,10 @@ void Logs::addLogsFromFile(const char *const filename,
     std::string extension;
     found = log.requestUrl.find_last_of('.');
     extension.assign(log.requestUrl, found + 1,
-                         log.requestUrl.length() - found);
-    if (optionE && (extension == "jpg" || extension == "png" ||
-                    extension == "gif" || extension == "ico" ||
-                    extension == "css" || extension == "js"))
+                     log.requestUrl.length() - found);
+    if (optionE &&
+        (extension == "jpg" || extension == "png" || extension == "gif" ||
+         extension == "ico" || extension == "css" || extension == "js"))
       continue;
 
     _logs.push_back(log);
