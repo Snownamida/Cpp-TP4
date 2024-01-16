@@ -42,14 +42,14 @@ int main(int argc, char *argv[]) {
   logs.addLogsFromFile(argv[argc - 1], BASE_URL, flagExcludeImageCSSJS,
                        flagSetTimeInterval, TimeInterval);
 
-  cout << logs;
+  // cout << logs;
 
   Documents documents;
   for (auto &log : logs.get()) {
     documents[log.requestUrl].addReferer(log.referer);
   }
 
-  // cout << documents;
+  cout << documents;
 
   // documents.printMostHitedDocuments(MAX_SHOW);
   // documents.printMostHitedDocuments(MAX_SHOW);

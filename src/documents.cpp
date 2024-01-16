@@ -20,8 +20,8 @@ Documents::getSortedDucumentsByHit(unsigned int maxShow) const {
 
 void Documents::printMostHitedDocuments(const unsigned int maxShow) const {
   for (auto &document : getSortedDucumentsByHit(maxShow)) {
-    std::cout << document.first << " (" << document.second.getHit()
-              <<" hits)" << std::endl;
+    std::cout << document.first << " (" << document.second.getHit() << " hits)"
+              << std::endl;
     // for (auto &referer : document.second.getReferers()) {
     //   cout << "\t" << referer.first << " " << referer.second << endl;
     // }
@@ -31,9 +31,11 @@ void Documents::printMostHitedDocuments(const unsigned int maxShow) const {
 std::ostream &operator<<(std::ostream &os, Documents &documents) {
 
   for (auto &document : documents._documents) {
-    std::cout << document.first << " " << document.second.getHit() << std::endl;
+    std::cout << document.first << " (" << document.second.getHit() << " hits)"
+              << std::endl;
     for (auto &referer : document.second.getReferers()) {
-      std::cout << "\t" << referer.first << " " << referer.second << std::endl;
+      std::cout << "\t" << referer.first << " (" << referer.second << " hits)"
+                << std::endl;
     }
   }
   return os;
