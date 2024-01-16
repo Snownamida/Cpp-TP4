@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "document.h"
+#include "documents.h"
 #include "logs.h"
 
 using std::cout;
@@ -15,7 +16,6 @@ using std::string;
 
 const string BASE_URL = "http://intranet-if.insa-lyon.fr";
 const unsigned int MAX_SHOW = 10;
-
 
 int main(int argc, char *argv[]) {
 
@@ -32,21 +32,8 @@ int main(int argc, char *argv[]) {
 
   // cout << documents;
 
-  std::vector<std::pair<string, document>> documentsSorted(documents.begin(),
-                                                           documents.end());
-
-  std::sort(documentsSorted.begin(), documentsSorted.end(),
-            [](const std::pair<string, document> &a,
-               const std::pair<string, document> &b) {
-              return a.second.getHit() > b.second.getHit();
-            });
-
-  unsigned int count = 0;
-  for (auto &document : documentsSorted) {
+  for (auto &document : documents.getSortedDucumentsByHit(MAX_SHOW)) {
     cout << document.first << " " << document.second.getHit() << endl;
-    ++count;
-    if (count >= MAX_SHOW)
-      break;
     // for (auto &referer : document.second.getReferers()) {
     //   cout << "\t" << referer.first << " " << referer.second << endl;
     // }
