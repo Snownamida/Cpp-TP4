@@ -1,7 +1,9 @@
 #ifndef LOGS_H
 #define LOGS_H
 
+#include <ostream>
 #include <string>
+#include <vector>
 
 struct Log {
   std::string IP;
@@ -18,8 +20,15 @@ struct Log {
   std::string UA;
 };
 
-void addLogsFromFile(std::vector<Log> &logs, const char *const filename,
-                     const std::string &BASE_URL);
+class Logs {
+public:
+  void addLogsFromFile(const char *const filename, const std::string &BASE_URL);
+  friend std::ostream &operator<<(std::ostream &os, const Logs &logs);
+  std::vector<Log> get() const { return _logs; }
+
+protected:
+  std::vector<Log> _logs;
+};
 
 std::ostream &operator<<(std::ostream &os, const Log &log);
 

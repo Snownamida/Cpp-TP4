@@ -43,16 +43,14 @@ std::ostream &operator<<(std::ostream &os,
 
 int main(int argc, char *argv[]) {
 
-  std::vector<Log> logs;
+  Logs logs;
 
-  addLogsFromFile(logs, argv[1], BASE_URL);
+  logs.addLogsFromFile(argv[1], BASE_URL);
 
-  // for (auto &log : logs) {
-  //   cout << log;
-  // }
+  // cout << logs;
 
   std::map<string, document> documents;
-  for (auto &log : logs) {
+  for (auto &log : logs.get()) {
     documents[log.requestUrl].addReferer(log.referer);
   }
 
