@@ -6,6 +6,7 @@
 #include <utility>
 #include <vector>
 
+#include "document.h"
 #include "logs.h"
 
 using std::cout;
@@ -15,31 +16,6 @@ using std::string;
 const string BASE_URL = "http://intranet-if.insa-lyon.fr";
 const unsigned int MAX_SHOW = 10;
 
-class document {
-public:
-  unsigned int getHit() const { return _hit; }
-  std::map<string, unsigned int> getReferers() const { return _referers; }
-  void addReferer(string url) {
-    _hit++;
-    _referers[url]++;
-  }
-
-protected:
-  unsigned int _hit = 0;
-  std::map<string, unsigned int> _referers;
-};
-
-std::ostream &operator<<(std::ostream &os,
-                         std::map<string, document> &documents) {
-
-  for (auto &document : documents) {
-    cout << document.first << " " << document.second.getHit() << endl;
-    for (auto &referer : document.second.getReferers()) {
-      cout << "\t" << referer.first << " " << referer.second << endl;
-    }
-  }
-  return os;
-}
 
 int main(int argc, char *argv[]) {
 
@@ -49,7 +25,7 @@ int main(int argc, char *argv[]) {
 
   // cout << logs;
 
-  std::map<string, document> documents;
+  Documents documents;
   for (auto &log : logs.get()) {
     documents[log.requestUrl].addReferer(log.referer);
   }
