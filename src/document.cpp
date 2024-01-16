@@ -1,3 +1,6 @@
 #include "document.h"
-#include <iostream>
 
+void Document::addReferer(std::string url) {
+  _hit++;
+  _referers[url]++;
+}

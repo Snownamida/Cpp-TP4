@@ -8,10 +8,7 @@ class Document {
 public:
   unsigned int getHit() const { return _hit; }
   std::map<std::string, unsigned int> getReferers() const { return _referers; }
-  void addReferer(std::string url) {
-    _hit++;
-    _referers[url]++;
-  }
+  void addReferer(std::string url);
 
 protected:
   unsigned int _hit = 0;
