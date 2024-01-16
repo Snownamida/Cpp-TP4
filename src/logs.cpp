@@ -8,18 +8,18 @@
 #include "logs.h"
 
 std::ostream &operator<<(std::ostream &os, const Log &log) {
-  os << log.IP << std::endl;
-  os << log.username << std::endl;
-  os << log.authenticatedUser << std::endl;
-  os << log.time << std::endl;
-  os << log.timeZone << std::endl;
-  os << log.requestMethod << std::endl;
-  os << log.requestUrl << std::endl;
-  os << log.requestProtocol << std::endl;
-  os << log.code << std::endl;
-  os << log.size << std::endl;
-  os << log.referer << std::endl;
-  os << log.UA << std::endl;
+  os << "IP                : " << log.IP << std::endl;
+  os << "username          : " << log.username << std::endl;
+  os << "authenticatedUser : " << log.authenticatedUser << std::endl;
+  os << "time              : " << log.time << std::endl;
+  os << "timeZone          : " << log.timeZone << std::endl;
+  os << "requestMethod     : " << log.requestMethod << std::endl;
+  os << "requestUrl        : " << log.requestUrl << std::endl;
+  os << "requestProtocol   : " << log.requestProtocol << std::endl;
+  os << "code              : " << log.code << std::endl;
+  os << "size              : " << log.size << std::endl;
+  os << "referer           : " << log.referer << std::endl;
+  os << "UA                : " << log.UA << std::endl;
   return os;
 }
 
