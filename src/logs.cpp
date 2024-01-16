@@ -80,8 +80,8 @@ void Logs::addLogsFromFile(const char *const filename,
     if (!log.requestUrl.compare(0, TICKET_PERSONNEL_URL.length(),
                                 TICKET_PERSONNEL_URL))
       log.requestUrl = TICKET_PERSONNEL_URL + "*";
-    // if (!log.requestUrl.compare(0, FAVICON_URL.length(), FAVICON_URL))
-    //   log.requestUrl = FAVICON_URL;
+    if (!log.requestUrl.compare(0, FAVICON_URL.length(), FAVICON_URL))
+      log.requestUrl = FAVICON_URL;
 
     // Heure Filter
     std::string requestHeure;
