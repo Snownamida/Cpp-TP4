@@ -45,7 +45,6 @@ int main(int argc, char *argv[]) {
 
   Logs logs;
 
-
   logs.addLogsFromFile(argv[1], BASE_URL);
 
   // cout << logs;
