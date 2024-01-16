@@ -1,10 +1,7 @@
-#include <algorithm>
 #include <iostream>
-#include <map>
 #include <ostream>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "document.h"
 #include "documents.h"
@@ -38,4 +35,8 @@ int main(int argc, char *argv[]) {
     //   cout << "\t" << referer.first << " " << referer.second << endl;
     // }
   }
+  
+ 
+  
+  return 0;
 }
