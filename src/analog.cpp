@@ -15,14 +15,6 @@ using std::string;
 const string BASE_URL = "http://intranet-if.insa-lyon.fr";
 const unsigned int MAX_SHOW = 10;
 
-void printMostHitedDocuments(const Documents &documents) {
-  for (auto &document : documents.getSortedDucumentsByHit(MAX_SHOW)) {
-    cout << document.first << " " << document.second.getHit() << endl;
-    // for (auto &referer : document.second.getReferers()) {
-    //   cout << "\t" << referer.first << " " << referer.second << endl;
-    // }
-  }
-}
 
 int main(int argc, char *argv[]) {
 
@@ -59,7 +51,8 @@ int main(int argc, char *argv[]) {
 
   // cout << documents;
 
-  printMostHitedDocuments(documents);
+  // documents.printMostHitedDocuments(MAX_SHOW);
+  documents.printMostHitedDocuments(MAX_SHOW);
 
   return 0;
 }

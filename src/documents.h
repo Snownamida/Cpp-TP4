@@ -14,8 +14,9 @@ struct Documents {
 
   std::vector<std::pair<std::string, Document>>
   getSortedDucumentsByHit(unsigned int maxShow) const;
-};
+  void printMostHitedDocuments(const unsigned int maxShow) const;
+  };
 
-std::ostream &operator<<(std::ostream &os, Documents &documents);
+  std::ostream &operator<<(std::ostream &os, Documents &documents);
 
 #endif // DOCUMENTS_H
