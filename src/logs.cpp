@@ -13,6 +13,7 @@ const std::string TICKET_PERSONNEL_URL =
     "/SiteWebIF/Intranet-personnel.php?ticket=";
 const std::string GOOGLE_FR_URL = "http://www.google.fr/";
 const std::string GOOGLE_COM_URL = "http://www.google.fr/";
+const std::string FAVICON_URL = "/cas/themes/insa/media/favicon.ico";
 
 std::ostream &operator<<(std::ostream &os, const Log &log) {
   os << "IP                : " << log.IP << std::endl;
@@ -79,6 +80,8 @@ void Logs::addLogsFromFile(const char *const filename,
     if (!log.requestUrl.compare(0, TICKET_PERSONNEL_URL.length(),
                                 TICKET_PERSONNEL_URL))
       log.requestUrl = TICKET_PERSONNEL_URL + "*";
+    // if (!log.requestUrl.compare(0, FAVICON_URL.length(), FAVICON_URL))
+    //   log.requestUrl = FAVICON_URL;
 
     // Heure Filter
     std::string requestHeure;
