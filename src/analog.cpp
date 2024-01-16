@@ -1,14 +1,12 @@
 #include <algorithm>
-#include <cstring>
-#include <fstream>
-#include <iomanip>
 #include <iostream>
 #include <map>
 #include <ostream>
-#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
+
+#include "logs.h"
 
 using std::cout;
 using std::endl;
@@ -16,21 +14,6 @@ using std::string;
 
 const string BASE_URL = "http://intranet-if.insa-lyon.fr";
 const unsigned int MAX_SHOW = 10;
-
-struct Log {
-  string IP;
-  string username;
-  string authenticatedUser;
-  string time;
-  string timeZone;
-  string requestMethod;
-  string requestUrl;
-  string requestProtocol;
-  unsigned short code;
-  unsigned int size;
-  string referer;
-  string UA;
-};
 
 class document {
 public:
@@ -46,22 +29,6 @@ protected:
   std::map<string, unsigned int> _referers;
 };
 
-std::ostream &operator<<(std::ostream &os, const Log &log) {
-  os << log.IP << endl;
-  os << log.username << endl;
-  os << log.authenticatedUser << endl;
-  os << log.time << endl;
-  os << log.timeZone << endl;
-  os << log.requestMethod << endl;
-  os << log.requestUrl << endl;
-  os << log.requestProtocol << endl;
-  os << log.code << endl;
-  os << log.size << endl;
-  os << log.referer << endl;
-  os << log.UA << endl;
-  return os;
-}
-
 std::ostream &operator<<(std::ostream &os,
                          std::map<string, document> &documents) {
 
@@ -74,7 +41,7 @@ std::ostream &operator<<(std::ostream &os,
   return os;
 }
 
-void addLogsFromFile(std::vector<Log> &logs, const char *const filename, bool optionE, bool optionT, string heure) {
+void addLogsFromFile(std::vector<Log> &logs, const char *const filename) {
   std::ifstream fin(filename);
 
   if (!fin.is_open()) {
@@ -112,22 +79,6 @@ void addLogsFromFile(std::vector<Log> &logs, const char *const filename, bool op
     if (!log.referer.compare(0, BASE_URL.length(), BASE_URL))
       log.referer.erase(0, BASE_URL.length());
 
-    // Heure Filter
-    string requestHeure;
-    size_t found = log.time.find(':');
-    requestHeure.assign(log.time, found + 1, 2);
-
-    if (optionT && requestHeure != heure) continue;
-
-    // Format Filter
-    string requestFormat = "";
-    found = log.requestUrl.find('.');
-    if (found != string::npos) 
-        requestFormat.assign(log.requestUrl, found + 1, log.requestUrl.length() - found);
-    
-    if (optionE && (requestFormat == "jpg" || requestFormat == "css" || requestFormat == "js")) continue;
-    
-
     logs.push_back(log);
   }
   fin.close();
@@ -137,23 +88,7 @@ int main(int argc, char *argv[]) {
 
   std::vector<Log> logs;
 
-  bool optionG = 0, optionE = 0, optionT = 0;
-  string unString, dotFile, heure;
-  for (int i = 1; i < argc - 1; ++i) {
-      unString = argv[i];
-      if (unString == "-g") {
-          optionG = 1;
-          dotFile = argv[i + 1];
-      }
-      else if (unString == "-e") {
-          optionE = 1;
-      }
-      else if (unString == "-t") {
-          optionT = 1;
-          heure = argv[i + 1];
-      }
-  }
-  addLogsFromFile(logs, argv[argc-1], optionE, optionT, heure);
+  addLogsFromFile(logs, argv[1]);
 
   // for (auto &log : logs) {
   //   cout << log;
