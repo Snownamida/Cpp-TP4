@@ -45,7 +45,24 @@ int main(int argc, char *argv[]) {
 
   Logs logs;
 
-  logs.addLogsFromFile(argv[1], BASE_URL);
+  bool optionG = 0, optionE = 0, optionT = 0;
+  string unString, heure, dotFile;
+  for (int i = 1; i < argc - 1; ++i) {
+      unString = argv[i];
+      if (unString == "-g") {
+          optionG = 1;
+          dotFile = argv[i + 1];
+      }
+      else if (unString == "-e") {
+          optionE = 1;
+      }
+      else if (unString == "-t") {
+          optionT = 1;
+          heure = argv[i + 1];
+      }
+  }
+
+  logs.addLogsFromFile(argv[argc-1], BASE_URL, optionE, optionT, heure);
 
   // cout << logs;
 

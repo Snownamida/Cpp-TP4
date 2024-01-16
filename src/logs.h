@@ -22,7 +22,7 @@ struct Log {
 
 class Logs {
 public:
-  void addLogsFromFile(const char *const filename, const std::string &BASE_URL);
+  void addLogsFromFile(const char *const filename, const std::string &BASE_URL, bool optionE, bool optionT, std::string heure);
   friend std::ostream &operator<<(std::ostream &os, const Logs &logs);
   std::vector<Log> get() const { return _logs; }
 
