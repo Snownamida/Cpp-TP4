@@ -24,7 +24,8 @@ std::ostream &operator<<(std::ostream &os, const Log &log) {
 }
 
 void Logs::addLogsFromFile(const char *const filename,
-                           const std::string &BASE_URL, bool optionE, bool optionT, std::string heure) {
+                           const std::string &BASE_URL, bool optionE,
+                           bool optionT, std::string heure) {
   std::ifstream fin(filename);
 
   if (!fin.is_open()) {
@@ -66,25 +67,29 @@ void Logs::addLogsFromFile(const char *const filename,
     std::string requestHeure;
     size_t found = log.time.find(':');
     requestHeure.assign(log.time, found + 1, 2);
-    if (optionT && requestHeure != heure) continue;
+    if (optionT && requestHeure != heure)
+      continue;
 
     // Format Filter
     std::string requestFormat;
     found = log.requestUrl.find('.');
-    requestFormat.assign(log.requestUrl, found + 1, log.requestUrl.length() - found);
-    if (optionE && (requestFormat == "jpg" || requestFormat == "jpg" || requestFormat == "js")) continue;
+    requestFormat.assign(log.requestUrl, found + 1,
+                         log.requestUrl.length() - found);
+    if (optionE && (requestFormat == "jpg" || requestFormat == "jpg" ||
+                    requestFormat == "js"))
+      continue;
 
     _logs.push_back(log);
   }
-
-    
 
   fin.close();
 }
 
 std::ostream &operator<<(std::ostream &os, const Logs &logs) {
   for (auto &log : logs._logs) {
+    os << "-------------------------" << std::endl;
     os << log;
+    os << "-------------------------" << std::endl;
   }
   return os;
 }

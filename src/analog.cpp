@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
   logs.addLogsFromFile(argv[argc - 1], BASE_URL, flagExcludeImageCSSJS,
                        flagSetTimeInterval, TimeInterval);
 
-  // cout << logs;
+  cout << logs;
 
   Documents documents;
   for (auto &log : logs.get()) {
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
   // cout << documents;
 
   // documents.printMostHitedDocuments(MAX_SHOW);
-  documents.printMostHitedDocuments(MAX_SHOW);
+  // documents.printMostHitedDocuments(MAX_SHOW);
 
   return 0;
 }
