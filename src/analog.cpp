@@ -49,10 +49,11 @@ int main(int argc, char *argv[]) {
     documents[log.requestUrl].addReferer(log.referer);
   }
 
-  cout << documents;
+  // cout << documents;
 
   // documents.printMostHitedDocuments(MAX_SHOW);
-  // documents.printMostHitedDocuments(MAX_SHOW);
+
+  documents.generateDot();
 
   return 0;
 }

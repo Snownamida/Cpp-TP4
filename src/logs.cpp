@@ -71,12 +71,13 @@ void Logs::addLogsFromFile(const char *const filename,
       continue;
 
     // Format Filter
-    std::string requestFormat;
-    found = log.requestUrl.find('.');
-    requestFormat.assign(log.requestUrl, found + 1,
+    std::string extension;
+    found = log.requestUrl.find_last_of('.');
+    extension.assign(log.requestUrl, found + 1,
                          log.requestUrl.length() - found);
-    if (optionE && (requestFormat == "jpg" || requestFormat == "jpg" ||
-                    requestFormat == "js"))
+    if (optionE && (extension == "jpg" || extension == "png" ||
+                    extension == "gif" || extension == "ico" ||
+                    extension == "css" || extension == "js"))
       continue;
 
     _logs.push_back(log);

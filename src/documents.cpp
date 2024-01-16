@@ -28,6 +28,17 @@ void Documents::printMostHitedDocuments(const unsigned int maxShow) const {
   }
 }
 
+void Documents::generateDot() const {
+    std::cout << "digraph {" << std::endl;
+    for (auto &document : _documents) {
+        for (auto &referer : document.second.getReferers()) {
+        std::cout << "\"" << referer.first << "\" -> \"" << document.first << "\""
+                    << std::endl;
+        }
+    }
+    std::cout << "}" << std::endl;
+}
+
 std::ostream &operator<<(std::ostream &os, Documents &documents) {
 
   for (auto &document : documents._documents) {
