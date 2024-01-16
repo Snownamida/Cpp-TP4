@@ -15,7 +15,7 @@ struct Documents {
   std::vector<std::pair<std::string, Document>>
   getSortedDucumentsByHit(unsigned int maxShow) const;
   void printMostHitedDocuments(const unsigned int maxShow) const;
-  void generateDot() const;
+  void generateDot(const std::string &dotFileName) const;
 };
 
   std::ostream &operator<<(std::ostream &os, Documents &documents);

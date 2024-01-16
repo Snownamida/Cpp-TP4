@@ -32,7 +32,7 @@ void Logs::addLogsFromFile(const char *const filename,
   std::ifstream fin(filename);
 
   if (!fin.is_open()) {
-    throw "File open failed";
+    throw "Log file open failed";
   }
 
   while (!fin.eof()) {

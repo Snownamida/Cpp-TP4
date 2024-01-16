@@ -1,4 +1,5 @@
 #include "documents.h"
+#include <fstream>
 #include <iostream>
 
 std::vector<std::pair<std::string, Document>>
@@ -28,15 +29,23 @@ void Documents::printMostHitedDocuments(const unsigned int maxShow) const {
   }
 }
 
-void Documents::generateDot() const {
-  std::cout << "digraph {" << std::endl;
+void Documents::generateDot(const std::string &dotFileName) const {
+
+  std::ofstream fout(dotFileName);
+
+  if (!fout.is_open()) {
+    throw "Dot file open failed";
+  }
+
+  fout << "digraph {" << std::endl;
   for (auto &document : _documents) {
     for (auto &referer : document.second.getReferers()) {
-      std::cout << "\t\"" << referer.first << "\" -> \"" << document.first
-                << "\" [label=\"" << referer.second << "\"];" << std::endl;
+      fout << "\t\"" << referer.first << "\" -> \"" << document.first
+           << "\" [label=\"" << referer.second << "\"];" << std::endl;
     }
   }
-  std::cout << "}" << std::endl;
+  fout << "}" << std::endl;
+  fout.close();
 }
 
 std::ostream &operator<<(std::ostream &os, Documents &documents) {
