@@ -3,9 +3,8 @@
 #include <iostream>
 
 std::vector<std::pair<std::string, Document>>
-Documents::getSortedDucumentsByHit(unsigned int maxShow) const {
-  std::vector<std::pair<std::string, Document>> documentsSorted(
-      _documents.begin(), _documents.end());
+Documents::getSortedDucumentsByHitNumber(unsigned int maxShow) const {
+  std::vector<std::pair<std::string, Document>> documentsSorted(begin(), end());
 
   std::sort(documentsSorted.begin(), documentsSorted.end(),
             [](const std::pair<std::string, Document> &a,
@@ -20,7 +19,7 @@ Documents::getSortedDucumentsByHit(unsigned int maxShow) const {
 }
 
 void Documents::printMostHitedDocuments(const unsigned int maxShow) const {
-  for (auto &document : getSortedDucumentsByHit(maxShow)) {
+  for (auto &document : getSortedDucumentsByHitNumber(maxShow)) {
     std::cout << document.first << " (" << document.second.getHit() << " hits)"
               << std::endl;
     // for (auto &referer : document.second.getReferers()) {
@@ -38,7 +37,7 @@ void Documents::generateDot(const std::string &dotFileName) const {
   }
 
   fout << "digraph {" << std::endl;
-  for (auto &document : _documents) {
+  for (auto &document : *this) {
     for (auto &referer : document.second.getReferers()) {
       fout << "\t\"" << referer.first << "\" -> \"" << document.first
            << "\" [label=\"" << referer.second << "\"];" << std::endl;
@@ -50,7 +49,7 @@ void Documents::generateDot(const std::string &dotFileName) const {
 
 std::ostream &operator<<(std::ostream &os, Documents &documents) {
 
-  for (auto &document : documents._documents) {
+  for (auto &document : documents) {
     std::cout << document.first << " (" << document.second.getHit() << " hits)"
               << std::endl;
     for (auto &referer : document.second.getReferers()) {

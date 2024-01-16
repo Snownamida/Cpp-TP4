@@ -7,17 +7,14 @@
 #include <string>
 #include <vector>
 
-struct Documents {
-  std::map<std::string, Document> _documents;
-
-  Document &operator[](std::string url) { return _documents[url]; }
+struct Documents : std::map<std::string, Document> {
 
   std::vector<std::pair<std::string, Document>>
-  getSortedDucumentsByHit(unsigned int maxShow) const;
+  getSortedDucumentsByHitNumber(unsigned int maxShow) const;
   void printMostHitedDocuments(const unsigned int maxShow) const;
   void generateDot(const std::string &dotFileName) const;
 };
 
-  std::ostream &operator<<(std::ostream &os, Documents &documents);
+std::ostream &operator<<(std::ostream &os, Documents &documents);
 
 #endif // DOCUMENTS_H
