@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
   string timeInterval, dotFileName;
   for (int i = 1; i < argc - 1; ++i) {
     if (!strcmp(argv[i], "-g")) {
-      flagGenerateDot = 1;
+      flagGenerateDot = true;
       ++i;
       if (i >= argc)
         throw "Please input dot file name";
