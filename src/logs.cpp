@@ -88,8 +88,9 @@ void Logs::addLogsFromFile(const char *const filename,
     // Format Filter
     std::string extension;
     found = log.requestUrl.find_last_of('.');
-    extension.assign(log.requestUrl, found + 1,
-                     log.requestUrl.length() - found);
+    if (found != std::string::npos)
+        extension.assign(log.requestUrl, found + 1,
+                         log.requestUrl.length() - found);
     if (flagExcludeImageCSSJS &&
         (extension == "jpg" || extension == "png" || extension == "gif" ||
          extension == "ico" || extension == "css" || extension == "js"))

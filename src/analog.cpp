@@ -2,6 +2,7 @@
 #include "logs.h"
 #include <cstring>
 #include <string>
+#include <iostream>
 
 using std::string;
 
@@ -14,18 +15,27 @@ void setOptions(int argc, const char *const argv[], bool &flagGenerateDot,
   for (int i = 1; i < argc - 1; ++i) {
     if (!strcmp(argv[i], "-g")) {
       flagGenerateDot = true;
-      ++i;
-      if (i >= argc)
+      dotFileName = argv[++i];
+      if (dotFileName.find(".dot") == string::npos)
         throw "Please input dot file name";
-      dotFileName = argv[i];
+      
     } else if (!strcmp(argv[i], "-e")) {
       flagExcludeImageCSSJS = 1;
     } else if (!strcmp(argv[i], "-t")) {
       flagSetTimeInterval = 1;
-      ++i;
-      if (i >= argc)
-        throw "Please input time";
-      timeInterval = argv[i];
+      timeInterval = argv[++i];
+      // in case timeInterval > 24 or cannot be convert to int 
+      try {
+          int timeIntervalToInt = std::stoi(timeInterval);
+          if (timeIntervalToInt >= 24)
+              throw 505;
+      }
+      catch (...) {
+          std::cout << "Invalid time" << std::endl;
+      }
+            
+      if (timeInterval.length() == 1) //timeInterval ="9" --> timeInterval = "09"
+          timeInterval = "0" + timeInterval;
     } else
       throw "invalid option";
   }
