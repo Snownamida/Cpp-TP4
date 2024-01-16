@@ -46,7 +46,8 @@ int main(int argc, char *argv[]) {
   }
 
   documents.printMostHitedDocuments(MAX_SHOW);
-  documents.generateDot(dotFileName);
+  if (flagGenerateDot)
+    documents.generateDot(dotFileName);
 
   return 0;
 }
