@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
   bool flagGenerateDot = false, flagExcludeImageCSSJS = false,
        flagSetTimeInterval = false;
 
-  string TimeInterval, dotFileName;
+  string timeInterval, dotFileName;
   for (int i = 1; i < argc - 1; ++i) {
     if (!strcmp(argv[i], "-g")) {
       flagGenerateDot = 1;
@@ -32,13 +32,13 @@ int main(int argc, char *argv[]) {
       ++i;
       if (i >= argc)
         throw "Please input time";
-      TimeInterval = argv[i];
+      timeInterval = argv[i];
     } else
       throw "invalid option";
   }
 
   logs.addLogsFromFile(argv[argc - 1], BASE_URL, flagExcludeImageCSSJS,
-                       flagSetTimeInterval, TimeInterval);
+                       flagSetTimeInterval, timeInterval);
 
   Documents documents;
   for (auto &log : logs.get()) {

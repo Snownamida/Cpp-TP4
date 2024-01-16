@@ -27,8 +27,8 @@ std::ostream &operator<<(std::ostream &os, const Log &log) {
 }
 
 void Logs::addLogsFromFile(const char *const filename,
-                           const std::string &BASE_URL, bool optionE,
-                           bool optionT, std::string heure) {
+                           const std::string &BASE_URL, bool flagExcludeImageCSSJS,
+                           bool flagSetTimeInterval, std::string timeInterval) {
   std::ifstream fin(filename);
 
   if (!fin.is_open()) {
@@ -81,7 +81,7 @@ void Logs::addLogsFromFile(const char *const filename,
     std::string requestHeure;
     size_t found = log.time.find(':');
     requestHeure.assign(log.time, found + 1, 2);
-    if (optionT && requestHeure != heure)
+    if (flagSetTimeInterval && requestHeure != timeInterval)
       continue;
 
     // Format Filter
@@ -89,7 +89,7 @@ void Logs::addLogsFromFile(const char *const filename,
     found = log.requestUrl.find_last_of('.');
     extension.assign(log.requestUrl, found + 1,
                      log.requestUrl.length() - found);
-    if (optionE &&
+    if (flagExcludeImageCSSJS &&
         (extension == "jpg" || extension == "png" || extension == "gif" ||
          extension == "ico" || extension == "css" || extension == "js"))
       continue;
