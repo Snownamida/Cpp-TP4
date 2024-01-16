@@ -74,7 +74,7 @@ std::ostream &operator<<(std::ostream &os,
   return os;
 }
 
-void addLogsFromFile(std::vector<Log> &logs, const char *const filename) {
+void addLogsFromFile(std::vector<Log> &logs, const char *const filename, bool optionE, bool optionT, string heure) {
   std::ifstream fin(filename);
 
   if (!fin.is_open()) {
@@ -112,6 +112,22 @@ void addLogsFromFile(std::vector<Log> &logs, const char *const filename) {
     if (!log.referer.compare(0, BASE_URL.length(), BASE_URL))
       log.referer.erase(0, BASE_URL.length());
 
+    // Heure Filter
+    string requestHeure;
+    size_t found = log.time.find(':');
+    requestHeure.assign(log.time, found + 1, 2);
+
+    if (optionT && requestHeure != heure) continue;
+
+    // Format Filter
+    string requestFormat = "";
+    found = log.requestUrl.find('.');
+    if (found != string::npos) 
+        requestFormat.assign(log.requestUrl, found + 1, log.requestUrl.length() - found);
+    
+    if (optionE && (requestFormat == "jpg" || requestFormat == "css" || requestFormat == "js")) continue;
+    
+
     logs.push_back(log);
   }
   fin.close();
@@ -121,7 +137,23 @@ int main(int argc, char *argv[]) {
 
   std::vector<Log> logs;
 
-  addLogsFromFile(logs, argv[1]);
+  bool optionG = 0, optionE = 0, optionT = 0;
+  string unString, dotFile, heure;
+  for (int i = 1; i < argc - 1; ++i) {
+      unString = argv[i];
+      if (unString == "-g") {
+          optionG = 1;
+          dotFile = argv[i + 1];
+      }
+      else if (unString == "-e") {
+          optionE = 1;
+      }
+      else if (unString == "-t") {
+          optionT = 1;
+          heure = argv[i + 1];
+      }
+  }
+  addLogsFromFile(logs, argv[argc-1], optionE, optionT, heure);
 
   // for (auto &log : logs) {
   //   cout << log;
@@ -133,24 +165,27 @@ int main(int argc, char *argv[]) {
   }
 
   // cout << documents;
-
   std::vector<std::pair<string, document>> documentsSorted(documents.begin(),
-                                                           documents.end());
+  documents.end());
 
   std::sort(documentsSorted.begin(), documentsSorted.end(),
-            [](const std::pair<string, document> &a,
-               const std::pair<string, document> &b) {
-              return a.second.getHit() > b.second.getHit();
-            });
+    [](const std::pair<string, document>& a,
+       const std::pair<string, document>& b) {
+          return a.second.getHit() > b.second.getHit();
+    });
 
   unsigned int count = 0;
-  for (auto &document : documentsSorted) {
-    cout << document.first << " " << document.second.getHit() << endl;
-    ++count;
-    if (count >= MAX_SHOW)
-      break;
-    // for (auto &referer : document.second.getReferers()) {
-    //   cout << "\t" << referer.first << " " << referer.second << endl;
-    // }
+  for (auto& document : documentsSorted) {
+        cout << document.first << " " << document.second.getHit() << endl;
+        ++count;
+        if (count >= MAX_SHOW)
+            break;
+          // for (auto &referer : document.second.getReferers()) {
+          //   cout << "\t" << referer.first << " " << referer.second << endl;
+          // }
   }
+  
+ 
+  
+  return 0;
 }
