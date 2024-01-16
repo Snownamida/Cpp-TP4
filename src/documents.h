@@ -1,6 +1,10 @@
+#ifndef DOCUMENTS_H
+#define DOCUMENTS_H
+
 #include <map>
 #include <string>
-#ifndef DOCUMENTS_H
+#include <vector>
+#include <algorithm>
 #include "document.h"
 
 struct Documents {
