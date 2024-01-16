@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 
-
 #include "logs.h"
 
 std::ostream &operator<<(std::ostream &os, const Log &log) {
@@ -24,8 +23,8 @@ std::ostream &operator<<(std::ostream &os, const Log &log) {
   return os;
 }
 
-void addLogsFromFile(std::vector<Log> &logs, const char *const filename,
-                     const std::string &BASE_URL) {
+void Logs::addLogsFromFile(const char *const filename,
+                           const std::string &BASE_URL) {
   std::ifstream fin(filename);
 
   if (!fin.is_open()) {
@@ -63,7 +62,14 @@ void addLogsFromFile(std::vector<Log> &logs, const char *const filename,
     if (!log.referer.compare(0, BASE_URL.length(), BASE_URL))
       log.referer.erase(0, BASE_URL.length());
 
-    logs.push_back(log);
+    _logs.push_back(log);
   }
   fin.close();
+}
+
+std::ostream &operator<<(std::ostream &os, const Logs &logs) {
+  for (auto &log : logs._logs) {
+    os << log;
+  }
+  return os;
 }

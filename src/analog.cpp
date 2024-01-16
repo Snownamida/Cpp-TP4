@@ -41,61 +41,17 @@ std::ostream &operator<<(std::ostream &os,
   return os;
 }
 
-void addLogsFromFile(std::vector<Log> &logs, const char *const filename) {
-  std::ifstream fin(filename);
-
-  if (!fin.is_open()) {
-    throw "File open failed";
-  }
-
-  while (!fin.eof()) {
-    Log log;
-    string tmp;
-    std::istringstream tmpiss;
-
-    fin >> log.IP;
-    if (log.IP.empty())
-      break;
-
-    fin >> log.username >> log.authenticatedUser >> log.time >>
-        std::quoted(log.timeZone);
-
-    fin >> std::quoted(tmp);
-    tmpiss = std::istringstream(tmp);
-    tmpiss >> log.requestMethod >> log.requestUrl >> log.requestProtocol;
-
-    fin >> log.code;
-
-    fin >> tmp;
-    if (tmp == "-")
-      tmp = "0";
-    log.size = std::stoi(tmp);
-
-    fin >> std::quoted(log.referer);
-    fin >> std::quoted(log.UA);
-
-    log.time.erase(0, 1);
-    log.timeZone.pop_back();
-    if (!log.referer.compare(0, BASE_URL.length(), BASE_URL))
-      log.referer.erase(0, BASE_URL.length());
-
-    logs.push_back(log);
-  }
-  fin.close();
-}
-
 int main(int argc, char *argv[]) {
 
-  std::vector<Log> logs;
+  Logs logs;
 
-  addLogsFromFile(logs, argv[1]);
 
-  // for (auto &log : logs) {
-  //   cout << log;
-  // }
+  logs.addLogsFromFile(argv[1], BASE_URL);
+
+  // cout << logs;
 
   std::map<string, document> documents;
-  for (auto &log : logs) {
+  for (auto &log : logs.get()) {
     documents[log.requestUrl].addReferer(log.referer);
   }
 
