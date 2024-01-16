@@ -7,12 +7,7 @@
 
 #include "logs.h"
 
-const std::string TICKET_ETUDIANT_URL =
-    "/SiteWebIF/Intranet-etudiant.php?ticket=";
-const std::string TICKET_PERSONNEL_URL =
-    "/SiteWebIF/Intranet-personnel.php?ticket=";
-const std::string GOOGLE_FR_URL = "http://www.google.fr/";
-const std::string GOOGLE_COM_URL = "http://www.google.com/";
+const std::string GOOGLE_URL = "http://www.google.";
 const std::string FAVICON_URL = "/cas/themes/insa/media/favicon.ico";
 
 std::ostream &operator<<(std::ostream &os, const Log &log) {
@@ -52,6 +47,13 @@ void Logs::addLogsFromFile(const char *const filename,
     fin >> log.username >> log.authenticatedUser >> log.time >>
         std::quoted(log.timeZone);
 
+    // Heure Filter
+    std::string requestHeure;
+    size_t found = log.time.find(':');
+    requestHeure.assign(log.time, found + 1, 2);
+    if (optionT && requestHeure != heure)
+      continue;
+
     fin >> std::quoted(tmp);
     tmpiss = std::istringstream(tmp);
     tmpiss >> log.requestMethod >> log.requestUrl >> log.requestProtocol;
@@ -68,27 +70,19 @@ void Logs::addLogsFromFile(const char *const filename,
 
     log.time.erase(0, 1);
     log.timeZone.pop_back();
+
+    size_t pos = log.referer.find('?');
+    if (pos != std::string::npos)
+      log.referer = log.referer.substr(0, pos);
+
+    pos = log.requestUrl.find('?');
+    if (pos != std::string::npos)
+      log.requestUrl = log.requestUrl.substr(0, pos);
+
     if (!log.referer.compare(0, BASE_URL.length(), BASE_URL))
       log.referer.erase(0, BASE_URL.length());
-    if (!log.referer.compare(0, GOOGLE_FR_URL.length(), GOOGLE_FR_URL))
-      log.referer = GOOGLE_FR_URL + '*';
-    if (!log.referer.compare(0, GOOGLE_COM_URL.length(), GOOGLE_COM_URL))
-      log.referer = GOOGLE_COM_URL + '*';
-    if (!log.requestUrl.compare(0, TICKET_ETUDIANT_URL.length(),
-                                TICKET_ETUDIANT_URL))
-      log.requestUrl = TICKET_ETUDIANT_URL + "*";
-    if (!log.requestUrl.compare(0, TICKET_PERSONNEL_URL.length(),
-                                TICKET_PERSONNEL_URL))
-      log.requestUrl = TICKET_PERSONNEL_URL + "*";
     if (!log.requestUrl.compare(0, FAVICON_URL.length(), FAVICON_URL))
       log.requestUrl = FAVICON_URL;
-
-    // Heure Filter
-    std::string requestHeure;
-    size_t found = log.time.find(':');
-    requestHeure.assign(log.time, found + 1, 2);
-    if (optionT && requestHeure != heure)
-      continue;
 
     // Format Filter
     std::string extension;
@@ -99,6 +93,9 @@ void Logs::addLogsFromFile(const char *const filename,
         (extension == "jpg" || extension == "png" || extension == "gif" ||
          extension == "ico" || extension == "css" || extension == "js"))
       continue;
+
+    if (!log.referer.compare(0, GOOGLE_URL.length(), GOOGLE_URL))
+      log.referer = GOOGLE_URL + '*';
 
     _logs.push_back(log);
   }
