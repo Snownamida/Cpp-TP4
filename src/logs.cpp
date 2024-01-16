@@ -47,12 +47,8 @@ void Logs::addLogsFromFile(const char *const filename,
     fin >> log.username >> log.authenticatedUser >> log.time >>
         std::quoted(log.timeZone);
 
-    // Heure Filter
-    std::string requestHeure;
-    size_t found = log.time.find(':');
-    requestHeure.assign(log.time, found + 1, 2);
-    if (optionT && requestHeure != heure)
-      continue;
+    log.time.erase(0, 1);
+    log.timeZone.pop_back();
 
     fin >> std::quoted(tmp);
     tmpiss = std::istringstream(tmp);
@@ -68,9 +64,6 @@ void Logs::addLogsFromFile(const char *const filename,
     fin >> std::quoted(log.referer);
     fin >> std::quoted(log.UA);
 
-    log.time.erase(0, 1);
-    log.timeZone.pop_back();
-
     size_t pos = log.referer.find('?');
     if (pos != std::string::npos)
       log.referer = log.referer.substr(0, pos);
@@ -83,6 +76,13 @@ void Logs::addLogsFromFile(const char *const filename,
       log.referer.erase(0, BASE_URL.length());
     if (!log.requestUrl.compare(0, FAVICON_URL.length(), FAVICON_URL))
       log.requestUrl = FAVICON_URL;
+
+    // Heure Filter
+    std::string requestHeure;
+    size_t found = log.time.find(':');
+    requestHeure.assign(log.time, found + 1, 2);
+    if (optionT && requestHeure != heure)
+      continue;
 
     // Format Filter
     std::string extension;

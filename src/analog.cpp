@@ -29,8 +29,10 @@ int main(int argc, char *argv[]) {
       flagExcludeImageCSSJS = 1;
     } else if (!strcmp(argv[i], "-t")) {
       flagSetTimeInterval = 1;
-      TimeInterval = argv[i + 1];
       ++i;
+      if (i >= argc)
+        throw "Please input time";
+      TimeInterval = argv[i];
     } else
       throw "invalid option";
   }
