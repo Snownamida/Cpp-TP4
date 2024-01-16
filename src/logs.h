@@ -20,16 +20,11 @@ struct Log {
   std::string UA;
 };
 
-class Logs {
-public:
+struct Logs : std::vector<Log> {
   void addLogsFromFile(const char *const filename, const std::string &BASE_URL,
                        bool flagExcludeImageCSSJS, bool flagSetTimeInterval,
                        std::string timeInterval);
   friend std::ostream &operator<<(std::ostream &os, const Logs &logs);
-  std::vector<Log> get() const { return _logs; }
-
-protected:
-  std::vector<Log> _logs;
 };
 
 std::ostream &operator<<(std::ostream &os, const Log &log);

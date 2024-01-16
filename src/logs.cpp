@@ -27,8 +27,9 @@ std::ostream &operator<<(std::ostream &os, const Log &log) {
 }
 
 void Logs::addLogsFromFile(const char *const filename,
-                           const std::string &BASE_URL, bool flagExcludeImageCSSJS,
-                           bool flagSetTimeInterval, std::string timeInterval) {
+                           const std::string &BASE_URL,
+                           bool flagExcludeImageCSSJS, bool flagSetTimeInterval,
+                           std::string timeInterval) {
   std::ifstream fin(filename);
 
   if (!fin.is_open()) {
@@ -97,14 +98,14 @@ void Logs::addLogsFromFile(const char *const filename,
     if (!log.referer.compare(0, GOOGLE_URL.length(), GOOGLE_URL))
       log.referer = GOOGLE_URL + '*';
 
-    _logs.push_back(log);
+    push_back(log);
   }
 
   fin.close();
 }
 
 std::ostream &operator<<(std::ostream &os, const Logs &logs) {
-  for (auto &log : logs._logs) {
+  for (auto &log : logs) {
     os << "-------------------------" << std::endl;
     os << log;
     os << "-------------------------" << std::endl;

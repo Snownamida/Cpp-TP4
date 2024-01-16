@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
   bool flagGenerateDot = false, flagExcludeImageCSSJS = false,
        flagSetTimeInterval = false;
   string timeInterval, dotFileName;
-  
+
   setOptions(argc, argv, flagGenerateDot, flagExcludeImageCSSJS,
              flagSetTimeInterval, timeInterval, dotFileName);
 
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
                        flagSetTimeInterval, timeInterval);
 
   Documents documents;
-  for (auto &log : logs.get()) {
+  for (auto &log : logs) {
     documents[log.requestUrl].addReferer(log.referer);
   }
 
