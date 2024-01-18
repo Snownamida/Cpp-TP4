@@ -17,7 +17,7 @@ void setOptions(int argc, const char *const argv[], bool &flagGenerateDot,
       flagGenerateDot = true;
       dotFileName = argv[++i];
       if (dotFileName.find(".dot") == string::npos)
-        throw "Please input dot file name";
+        throw std::runtime_error("Please input dot file name");
 
     } else if (!strcmp(argv[i], "-e")) {
       flagExcludeImageCSSJS = 1;
@@ -30,14 +30,14 @@ void setOptions(int argc, const char *const argv[], bool &flagGenerateDot,
         if (timeIntervalToInt >= 24)
           throw 505;
       } catch (...) {
-        std::cout << "Invalid time" << std::endl;
+        std::cerr << "Invalid time" << std::endl;
       }
 
       if (timeInterval.length() ==
           1) // timeInterval ="9" --> timeInterval = "09"
         timeInterval = "0" + timeInterval;
     } else
-      throw "invalid option";
+      throw std::runtime_error("invalid option");
   }
 }
 
