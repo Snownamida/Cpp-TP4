@@ -3,7 +3,6 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <vector>
 
 #include "logs.h"
 
@@ -89,8 +88,8 @@ void Logs::addLogsFromFile(const char *const filename,
     std::string extension;
     found = log.requestUrl.find_last_of('.');
     if (found != std::string::npos)
-        extension.assign(log.requestUrl, found + 1,
-                         log.requestUrl.length() - found);
+      extension.assign(log.requestUrl, found + 1,
+                       log.requestUrl.length() - found);
     if (flagExcludeImageCSSJS &&
         (extension == "jpg" || extension == "png" || extension == "gif" ||
          extension == "ico" || extension == "css" || extension == "js"))
