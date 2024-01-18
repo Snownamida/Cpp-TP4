@@ -1,8 +1,8 @@
 #include "documents.h"
 #include "logs.h"
 #include <cstring>
-#include <string>
 #include <iostream>
+#include <string>
 
 using std::string;
 
@@ -18,24 +18,24 @@ void setOptions(int argc, const char *const argv[], bool &flagGenerateDot,
       dotFileName = argv[++i];
       if (dotFileName.find(".dot") == string::npos)
         throw "Please input dot file name";
-      
+
     } else if (!strcmp(argv[i], "-e")) {
       flagExcludeImageCSSJS = 1;
     } else if (!strcmp(argv[i], "-t")) {
       flagSetTimeInterval = 1;
       timeInterval = argv[++i];
-      // in case timeInterval > 24 or cannot be convert to int 
+      // in case timeInterval > 24 or cannot be convert to int
       try {
-          int timeIntervalToInt = std::stoi(timeInterval);
-          if (timeIntervalToInt >= 24)
-              throw 505;
+        int timeIntervalToInt = std::stoi(timeInterval);
+        if (timeIntervalToInt >= 24)
+          throw 505;
+      } catch (...) {
+        std::cout << "Invalid time" << std::endl;
       }
-      catch (...) {
-          std::cout << "Invalid time" << std::endl;
-      }
-            
-      if (timeInterval.length() == 1) //timeInterval ="9" --> timeInterval = "09"
-          timeInterval = "0" + timeInterval;
+
+      if (timeInterval.length() ==
+          1) // timeInterval ="9" --> timeInterval = "09"
+        timeInterval = "0" + timeInterval;
     } else
       throw "invalid option";
   }
