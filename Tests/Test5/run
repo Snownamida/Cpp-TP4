@@ -1,1 +1,1 @@
-../../bin/analog -t 1 ../logs/mini-anonyme.log
+../../bin/analog -t 25 ../logs/mini-anonyme.log
