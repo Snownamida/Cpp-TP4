@@ -16,8 +16,8 @@ void setOptions(int argc, const char *const argv[], bool &flagGenerateDot,
     if (!strcmp(argv[i], "-g")) {
       flagGenerateDot = true;
       dotFileName = argv[++i];
-      if (dotFileName.find(".dot") == string::npos)
-        throw std::runtime_error("Please input dot file name");
+      // if (dotFileName.find(".dot") == string::npos)
+      //   throw std::runtime_error("Please input dot file name");
 
     } else if (!strcmp(argv[i], "-e")) {
       flagExcludeImageCSSJS = 1;
