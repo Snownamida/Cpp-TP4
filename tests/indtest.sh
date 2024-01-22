@@ -17,7 +17,7 @@ else
   fi
 fi
 
-cd $Directory
+cd "$Directory"
 
 if [ -r "description" ]
 then 
@@ -158,7 +158,7 @@ fi
 echo "-----------------------------------------------------------"
 echo 
 
-cd $execDir
+cd "$execDir"
 
 # log result in $2 if filename provided
 if [ "$2" != "" ]
