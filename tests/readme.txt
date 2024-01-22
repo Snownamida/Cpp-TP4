@@ -1,6 +1,8 @@
 Programme de tests automatiques - mode d'emploi
 
 
+**Vous devez etre dans ce repertoire pour lancer les scripts.**
+
 -------------------------------------------------------------------------------
 test.sh [ repertoire [ fichier.csv ] ]
 
