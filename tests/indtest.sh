@@ -17,7 +17,7 @@ else
   fi
 fi
 
-cd $Directory
+cd "$Directory"
 
 if [ -r "description" ]
 then 
